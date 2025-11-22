@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Premium Top Movers — Sundarwadi Market</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<header class="header">
+  <h1>⚡ Sundarwadi Market — Top Movers Board</h1>
+  <p class="subtitle">Premium Price Analytics • Daily Updates</p>
+</header>
+
+<main class="container">
+
+  <!-- Highlight of the Day -->
+  <section class="highlight-card glass">
+    <h2>🌟 Highlight of the Day</h2>
+    <p id="highlightText">Loading...</p>
+  </section>
+
+  <!-- Top Movers Grid -->
+  <section class="movers-grid">
+
+    <!-- Top Increases -->
+    <div class="mover-card glass up">
+      <h3>⬆️ Top 5 Price Increases</h3>
+      <ul id="upList"></ul>
+    </div>
+
+    <!-- Top Decreases -->
+    <div class="mover-card glass down">
+      <h3>⬇️ Top 5 Price Drops</h3>
+      <ul id="downList"></ul>
+    </div>
+
+    <!-- Stable Items -->
+    <div class="mover-card glass stable">
+      <h3>➡️ Top 5 Stable Items</h3>
+      <ul id="stableList"></ul>
+    </div>
+
+  </section>
+
+</main>
+<footer class="footer">
+  © 2025 Sundarwadi Market • Top Movers Board
+</footer>
+<a href="index.html" class="back-btn">← Back</a>
+
+<script>
+/* ===== Realistic Change Data ===== */
+const today = {
+  Tomato: 30,
+  Potato: 22,
+  Onion: 18,
+  Milk: 57,
+  Apple: 110,
+  Banana: 40,
+  Brinjal: 35,
+  Cabbage: 20,
+  Carrot: 42,
+  Spinach: 18
+};
+
+const yesterday = {
+  Tomato: 27,
+  Potato: 24,
+  Onion: 19,
+  Milk: 58,
+  Apple: 111,
+  Banana: 40,
+  Brinjal: 32,
+  Cabbage: 20,
+  Carrot: 43,
+  Spinach: 18
+};
+
+/* ===== Compute Changes ===== */
+const changes = [];
+for (const item in today) {
+  const diff = today[item] - yesterday[item];
+  const pct = ((diff / yesterday[item]) * 100).toFixed(1);
+  changes.push({ item, diff, pct });
+}
+
+/* Sort for top movers */
+const up = [...changes].filter(i => i.diff > 0).sort((a,b)=>b.diff - a.diff).slice(0,5);
+const down = [...changes].filter(i => i.diff < 0).sort((a,b)=>a.diff - b.diff).slice(0,5);
+const stable = [...changes].filter(i => i.diff === 0).slice(0,5);
+
+/* Fill the lists */
+function fillList(id, arr, type) {
+  const ul = document.getElementById(id);
+  ul.innerHTML = "";
+  arr.forEach(item => {
+    ul.innerHTML += `
+      <li class="item">
+        <span class="name">${item.item}</span>
+        <span class="value ${type}">
+          ${item.diff > 0 ? "+" : ""}${item.diff} ( ${item.pct}% )
+        </span>
+      </li>
+    `;
+  });
+}
+
+fillList("upList", up, "up");
+fillList("downList", down, "down");
+fillList("stableList", stable, "stable");
+
+/* Highlight of the day */
+if (up.length > 0) {
+  const top = up[0];
+  document.getElementById("highlightText").innerText =
+    `${top.item} increased the most: +₹${top.diff} (${top.pct}%)`;
+} else {
+  document.getElementById("highlightText").innerText = "No major price changes today.";
+}
+</script>
+
+</body>
+</html>

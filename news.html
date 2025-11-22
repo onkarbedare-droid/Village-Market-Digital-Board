@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Village News — Sundarwadi</title>
+  <link rel="stylesheet" href="refere.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="hero">
+  <h1>📰 Village News</h1>
+  <p>Latest events and happenings in Sundarwadi.</p>
+</header>
+
+<div class="page-container">
+
+  <div class="glass-box">
+    <h2>🗞️ Latest News</h2>
+    <ul class="list" id="newsList">
+      <li>🌾 Farmers reported a great harvest this season.</li>
+      <li>🏫 New digital classroom inaugurated at Sundarwadi School.</li>
+      <li>🛣️ Road construction started near Shivnagar Chowk.</li>
+      <li>🎉 Temple festival begins next Monday.</li>
+      <li>🚜 Training workshop organized for local farmers.</li>
+    </ul>
+  </div>
+
+</div>
+<a href="index.html" class="back-btn">← Back</a>
+<footer class="footer">
+  © 2025 Sundarwadi Village Digital Board
+</footer>
+
+<script>
+  // Load saved village news
+  let savedNews = JSON.parse(localStorage.getItem("villageNews")) || [];
+
+  let newsBox = document.getElementById("newsList");
+
+  if (savedNews.length === 0) {
+    newsBox.innerHTML = "<li>No news yet.</li>";
+  } else {
+    newsBox.innerHTML = "";  
+    savedNews.forEach(item => {
+      newsBox.innerHTML += `<li>${item}</li>`;
+    });
+  }
+</script>
+
+</body>
+</html>

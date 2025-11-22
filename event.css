@@ -1,0 +1,121 @@
+/* Basic Setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f3f7fd;
+  color: #333;
+}
+
+/* Back Button */
+.back-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #0066ff;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #004ec2;
+  transform: translateY(-3px);
+}
+
+/* Header / Hero Section */
+.hero {
+  text-align: center;
+  padding: 50px 20px;
+  background: linear-gradient(to right, #3cba92, #0ba360);
+  color: white;
+  border-bottom: 5px solid #0ba360;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1rem;
+  color: #eefcf3;
+}
+
+/* Main Content Container */
+.page-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Glass Box for Events */
+.glass-box {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 20px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.glass-box h2 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* Event List */
+.list {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.list li {
+  background: white;
+  margin-bottom: 12px;
+  padding: 15px 18px;
+  border-radius: 14px;
+  font-size: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: 0.25s ease;
+  border-left: 6px solid #0ba360;
+}
+
+.list li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Small Icon Styling (optional for emoji icons in text) */
+.list li::before {
+  content: "📅 ";
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin: 40px 0 20px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+  .glass-box {
+    padding: 18px;
+  }
+  .list li {
+    font-size: 0.95rem;
+  }
+}

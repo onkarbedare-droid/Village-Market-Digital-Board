@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel — Sundarwadi</title>
+  <link rel="stylesheet" href="admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<a href="index.html" class="back-btn">← Back</a>
+<a onclick="logout()" class="logout-btn">Logout</a>
+
+<header class="header">
+  <h1>🛠️ Admin Panel</h1>
+  <p>Add, Edit, and Delete Announcements & News</p>
+</header>
+
+<div class="container">
+
+  <!-- ADD ANNOUNCEMENT -->
+  <div class="box">
+    <h2>📢 Add Announcement</h2>
+
+    <textarea id="announcementInput" placeholder="Type announcement here..."></textarea>
+
+    <div class="btn-group">
+      <button onclick="addAnnouncement('normal')" class="btn normal">Add Announcement</button>
+      <button onclick="addAnnouncement('urgent')" class="btn urgent">🚨 Add Emergency Announcement</button>
+    </div>
+
+    <ul id="announcementList" class="list"></ul>
+  </div>
+
+  <!-- ADD NEWS -->
+  <div class="box">
+    <h2>📰 Add Village News</h2>
+    <textarea id="newsInput" placeholder="Type news here..."></textarea>
+    <button onclick="addNews()" class="btn">Add News</button>
+
+    <ul id="newsList" class="list"></ul>
+  </div>
+
+  <!-- Manage Village Events -->
+  <div class="box">
+    <h2>🎉 Manage Village Events</h2>
+    <textarea id="eventInput" placeholder="Type event details..."></textarea>
+    <button onclick="addEvent()" class="btn">Add Event</button>
+    <ul id="eventList" class="list"></ul>
+  </div>
+
+</div>
+
+<footer class="footer">
+  Admin Panel • Sundarwadi Digital Board
+</footer>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+/* ======================
+      LOAD DATA
+====================== */
+let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+let news = JSON.parse(localStorage.getItem("villageNews")) || [];
+
+/* ======================
+      RENDER LISTS
+====================== */
+function loadAnnouncements() {
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+  const box = document.getElementById("announcementList");
+  box.innerHTML = "";
+
+  if (announcements.length === 0) {
+    box.innerHTML = "<li>No announcements added yet.</li>";
+    return;
+  }
+
+  announcements.forEach((item, index) => {
+    let text, label;
+
+    if (typeof item === "object") {
+      text = item.text;
+      label = item.label || "normal";
+    } else {
+      text = item;
+      label = "normal";
+    }
+
+    // Urgent announcement style
+    if (label === "urgent") {
+      box.innerHTML += `
+        <li class="urgent">
+          <div class="content">
+            <span class="emergency-icon">⚠️</span>
+            <strong>[EMERGENCY]</strong> ${text}
+          </div>
+          <div class="actions">
+            <button onclick="editAnnouncement(${index})" class="edit-btn">✏️</button>
+            <button onclick="deleteAnnouncement(${index})" class="del-btn">🗑️</button>
+          </div>
+        </li>
+      `;
+    } else {
+      // Normal announcement
+      box.innerHTML += `
+        <li>
+          <div class="content">${text}</div>
+          <div class="actions">
+            <button onclick="editAnnouncement(${index})" class="edit-btn">✏️</button>
+            <button onclick="deleteAnnouncement(${index})" class="del-btn">🗑️</button>
+          </div>
+        </li>
+      `;
+    }
+  });
+}
+
+function loadNews() {
+  let box = document.getElementById("newsList");
+  box.innerHTML = "";
+
+  if (news.length === 0) {
+    box.innerHTML = "<li>No news added.</li>";
+    return;
+  }
+
+  news.forEach((item, index) => {
+    box.innerHTML += `
+      <li>
+        <span>${item}</span>
+        <button onclick="editNews(${index})" class="edit-btn">✏️</button>
+        <button onclick="deleteNews(${index})" class="del-btn">🗑️</button>
+      </li>
+    `;
+  });
+}
+
+/* ======================
+      ADD ITEMS
+====================== */
+function addAnnouncement(type) {
+  const text = document.getElementById("announcementInput").value;
+  if (text.trim() === "") return alert("Please enter an announcement.");
+
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+
+  // Save with type (urgent or normal)
+  announcements.push({
+    text: text,
+    label: type === "urgent" ? "urgent" : "normal"
+  });
+
+  localStorage.setItem("announcements", JSON.stringify(announcements));
+
+  document.getElementById("announcementInput").value = "";
+  loadAnnouncements();
+}
+
+function addNews() {
+  let text = document.getElementById("newsInput").value;
+  if (text.trim() === "") return alert("Enter news!");
+  
+  news.push(text);
+  localStorage.setItem("villageNews", JSON.stringify(news));
+  document.getElementById("newsInput").value = "";
+  loadNews();
+}
+
+/* ======================
+      DELETE ITEMS
+====================== */
+function deleteAnnouncement(i) {
+  announcements.splice(i, 1);
+  localStorage.setItem("announcements", JSON.stringify(announcements));
+  loadAnnouncements();
+}
+
+function deleteNews(i) {
+  news.splice(i, 1);
+  localStorage.setItem("villageNews", JSON.stringify(news));
+  loadNews();
+}
+
+/* ======================
+      EDIT ITEMS
+====================== */
+function editAnnouncement(i) {
+  let updated = prompt("Edit Announcement:", announcements[i]);
+  if (updated !== null && updated.trim() !== "") {
+    announcements[i] = updated;
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+    loadAnnouncements();
+  }
+}
+
+function editNews(i) {
+  let updated = prompt("Edit News:", news[i]);
+  if (updated !== null && updated.trim() !== "") {
+    news[i] = updated;
+    localStorage.setItem("villageNews", JSON.stringify(news));
+    loadNews();
+  }
+}
+
+
+// ========================
+//  VILLAGE EVENTS CONTROL
+// ========================
+// -------------------- VILLAGE EVENTS CONTROL --------------------
+let events = JSON.parse(localStorage.getItem("villageEvents")) || [];
+
+function loadEvents() {
+  const box = document.getElementById("eventList");
+  box.innerHTML = "";
+
+  if (events.length === 0) {
+    box.innerHTML = "<li>No events added yet.</li>";
+    return;
+  }
+
+  events.forEach((item, index) => {
+    box.innerHTML += `
+      <li>
+        ${item}
+        <div class="actions">
+          <button onclick="editEvent(${index})" class="edit-btn">✏️</button>
+          <button onclick="deleteEvent(${index})" class="del-btn">🗑️</button>
+        </div>
+      </li>
+    `;
+  });
+}
+
+function addEvent() {
+  const text = document.getElementById("eventInput").value;
+  if (text.trim() === "") return alert("Please enter an event.");
+
+  events.push(text);
+  localStorage.setItem("villageEvents", JSON.stringify(events));
+  document.getElementById("eventInput").value = "";
+  loadEvents(); // reload the list immediately
+}
+
+function deleteEvent(i) {
+  events.splice(i, 1);
+  localStorage.setItem("villageEvents", JSON.stringify(events));
+  loadEvents();
+}
+
+function editEvent(i) {
+  const updated = prompt("Edit Event:", events[i]);
+  if (updated && updated.trim() !== "") {
+    events[i] = updated;
+    localStorage.setItem("villageEvents", JSON.stringify(events));
+    loadEvents();
+  }
+}
+
+window.onload = loadEvents;
+
+/* ======================
+      LOGOUT
+====================== */
+function logout() {
+  localStorage.removeItem("isLoggedIn");
+  window.location.href = "admin-login.html";
+}
+
+/* INITIAL LOAD */
+loadAnnouncements();
+loadNews();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sundarwadi Village Market Digital Board</title>
+  <link rel="stylesheet" href="main-premium.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Premium Header -->
+<header class="hero">
+  <h1>🌾 Sundarwadi Village Digital Board</h1>
+  <p>Your one-stop platform for market prices, weather, news, and village updates.</p>
+  <div class="live-time" id="liveTime"></div>
+</header>
+
+<div class="admin-login">
+  <a href="admin-login.html" class="admin-btn">🛠️ Admin Login</a>
+</div>
+
+<!-- Categories -->
+<section class="section-title">🛒 Marketplace</section>
+
+<div class="grid">
+
+  <a href="fruits.html" class="card glass">
+    <div class="icon">🍎</div>
+    <h3>Fruits</h3>
+    <p>Today’s fruit prices</p>
+  </a>
+
+  <a href="vegetables.html" class="card glass">
+    <div class="icon">🥕</div>
+    <h3>Vegetables</h3>
+    <p>Fresh veg prices</p>
+  </a>
+
+  <a href="grocery.html" class="card glass">
+    <div class="icon">🛒</div>
+    <h3>Grocery</h3>
+    <p>Daily essentials</p>
+  </a>
+
+  <a href="dairy.html" class="card glass">
+    <div class="icon">🥛</div>
+    <h3>Dairy</h3>
+    <p>Milk & Paneer rates</p>
+  </a>
+
+  <a href="spices.html" class="card glass">
+    <div class="icon">🌶️</div>
+    <h3>Spices & Masala</h3>
+    <p>Updated daily</p>
+  </a>
+
+
+</div>
+
+<!-- Services -->
+<section class="section-title">⚙ Village Services</section>
+
+<div class="grid">
+
+  <a href="weather.html" class="card glass">
+    <div class="icon">🌦️</div>
+    <h3>Weather</h3>
+    <p>Live weather update</p>
+  </a>
+
+  <a href="bus.html" class="card glass">
+    <div class="icon">🚌</div>
+    <h3>Bus Timetable</h3>
+    <p>Routes & timings</p>
+  </a>
+
+  <a href="water-supply.html" class="card glass">
+    <div class="icon">🚰</div>
+    <h3>Water Supply</h3>
+    <p>Daily schedule</p>
+  </a>
+
+</div>
+
+<!-- Information -->
+<section class="section-title">📢 Information</section>
+
+<div class="grid">
+
+  <a href="announcements.html" class="card glass">
+    <div class="icon">📢</div>
+    <h3>Announcements</h3>
+    <p>Important notices</p>
+  </a>
+
+  <a href="news.html" class="card glass">
+    <div class="icon">📰</div>
+    <h3>Village News</h3>
+    <p>Daily updates</p>
+  </a>
+
+  <a href="event.html" class="card glass">
+    <div class="icon">🎊</div>
+    <h3>Village Events</h3>
+    <p>Festivals, cultural programs, meetings</p>
+  </a>
+
+  <a href="dashboard.html" class="card glass">
+    <div class="icon">⚡</div>
+    <h3>Top Movers</h3>
+    <p>Price changes today</p>
+  </a>
+
+</div>
+
+<footer class="footer">
+  © 2025 Sundarwadi Village Digital Board
+</footer>
+
+</body>
+
+<script>
+function updateTime() {
+  const now = new Date();
+
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let seconds = now.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  let timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+  document.getElementById("liveTime").innerText = timeString;
+}
+
+setInterval(updateTime, 1000);
+updateTime();
+</script>
+
+</html>

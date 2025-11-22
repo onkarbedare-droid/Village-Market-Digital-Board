@@ -1,0 +1,102 @@
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  background: #eef6ff;
+}
+
+/* Header */
+header {
+  text-align: center;
+  background: linear-gradient(135deg, #0072ff, #4facfe);
+  padding: 20px;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.9rem;
+}
+
+/* Current Weather Box */
+.weather-main {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.current-box {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  border-left: 6px solid #0072ff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.current-box h2 {
+  margin-top: 0;
+  color: #0072ff;
+}
+
+/* Forecast */
+.subheading {
+  text-align: center;
+  margin-top: 40px;
+  color: #234;
+}
+
+.forecast-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 20px auto 40px;
+  padding: 0 20px;
+}
+
+.forecast-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+  border-left: 6px solid #4facfe;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.forecast-card h3 {
+  margin: 0;
+  color: #0072ff;
+}
+
+.forecast-card .icon {
+  font-size: 3rem;
+  margin: 10px 0;
+}
+
+.forecast-card p {
+  margin: 5px 0;
+}
+
+.back-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: grey;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #004ec2;
+  transform: translateY(-3px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .forecast-section {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

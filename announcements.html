@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Announcements — Sundarwadi</title>
+  <link rel="stylesheet" href="refere.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="hero">
+  <h1>📢 Village Announcements</h1>
+  <p>Important notices and updates for Sundarwadi village.</p>
+</header>
+
+<div class="page-container">
+
+  <div class="glass-box">
+    <h2>📌 Latest Announcements</h2>
+    <ul class="list" id="announcementList">
+      <li>🔔 New crop insurance scheme starts from next Monday.</li>
+      <li>💧 Water supply delay tomorrow due to pipeline repair.</li>
+      <li>🛒 Weekly market at Main Bazaar on Friday.</li>
+      <li>🏥 Free medical camp at Panchayat Hall on Sunday.</li>
+      <li>🎓 Computer training for youth starts next week.</li>
+    </ul>
+  </div>
+
+</div>
+<a href="index.html" class="back-btn">← Back</a>
+<footer class="footer">
+  © 2025 Sundarwadi Village Digital Board
+</footer>
+
+<script>
+let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+let listBox = document.getElementById("announcementList");
+
+function displayAnnouncements() {
+  listBox.innerHTML = "";
+
+  if (announcements.length === 0) {
+    listBox.innerHTML = "<li>No announcements yet.</li>";
+    return;
+  }
+
+  announcements.forEach(item => {
+    // If it's saved as object (with label)
+    if (typeof item === "object") {
+      const label = item.label || "normal";
+      const text = item.text || item;
+
+      // Urgent → blinking red with icon
+      if (label === "urgent") {
+        listBox.innerHTML += `
+          <li class="urgent">
+            <span class="emergency-icon">⚠️</span>
+            <strong>[EMERGENCY]</strong> ${text}
+          </li>
+        `;
+      } else {
+        // Normal announcement
+        listBox.innerHTML += `<li>${text}</li>`;
+      }
+    } else {
+      // Backward compatibility for old string announcements
+      listBox.innerHTML += `<li>${item}</li>`;
+    }
+  });
+}
+
+displayAnnouncements();
+</script>
+
+</body>
+</html>

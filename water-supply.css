@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  background: #f3faff;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #0099ff, #33bbff);
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.9rem;
+}
+
+.back-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: grey;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #004ec2;
+  transform: translateY(-3px);
+}
+
+/* Grid Section */
+.water-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 30px;
+}
+
+/* Card Design */
+.water-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  border-left: 6px solid #0099ff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: 0.3s ease;
+}
+
+.water-card:hover {
+  transform: scale(1.03);
+  background: #eefaff;
+}
+
+.water-card h2 {
+  margin: 0 0 10px;
+  color: #0099ff;
+}
+
+.water-card p {
+  margin: 5px 0;
+  font-size: 1.05rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .water-section {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

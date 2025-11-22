@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Village Events — Sundarwadi</title>
+  <link rel="stylesheet" href="event.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<a href="index.html" class="back-btn">← Back</a>
+
+<header class="hero">
+  <h1>🎉 Village Events</h1>
+  <p>Stay informed about all cultural, educational, and community events in Sundarwadi.</p>
+</header>
+
+<div class="page-container">
+  <div class="glass-box">
+    <h2>📅 Upcoming & Recent Events</h2>
+    <ul class="list" id="eventList"></ul>
+  </div>
+</div>
+
+<footer class="footer">
+  © 2025 Sundarwadi Digital Board
+</footer>
+
+<script>
+// Load saved events from LocalStorage
+let savedEvents = JSON.parse(localStorage.getItem("villageEvents")) || [];
+let listBox = document.getElementById("eventList");
+
+if (savedEvents.length === 0) {
+  listBox.innerHTML = "<li>No events available right now.</li>";
+} else {
+  savedEvents.forEach(item => {
+    listBox.innerHTML += `<li>${item}</li>`;
+  });
+}
+</script>
+
+</body>
+</html>

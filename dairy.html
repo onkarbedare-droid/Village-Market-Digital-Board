@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dairy Prices</title>
+    <link rel="stylesheet" href="dairy.css">
+</head>
+
+<body>
+
+<h1>Dairy Price History</h1>
+
+<select id="dateSelector" onchange="loadPrices()"></select>
+
+<ul id="dairyList"></ul>
+
+<script>
+// -------------------- DAIRY PRICE HISTORY (25 Days) --------------------
+let DAIRY_PRICE_HISTORY = {
+"2025-11-01": {Milk:56, Curd:45, Ghee:540, Butter:480, Paneer:280, Cheese:380, Lassi:25, Cream:120},
+"2025-11-02": {Milk:57, Curd:45, Ghee:542, Butter:482, Paneer:281, Cheese:382, Lassi:25, Cream:121},
+"2025-11-03": {Milk:57, Curd:46, Ghee:543, Butter:483, Paneer:282, Cheese:381, Lassi:26, Cream:120},
+"2025-11-04": {Milk:58, Curd:46, Ghee:545, Butter:485, Paneer:283, Cheese:383, Lassi:26, Cream:122},
+"2025-11-05": {Milk:59, Curd:47, Ghee:548, Butter:486, Paneer:284, Cheese:384, Lassi:27, Cream:123},
+"2025-11-06": {Milk:58, Curd:47, Ghee:547, Butter:486, Paneer:283, Cheese:383, Lassi:26, Cream:122},
+"2025-11-07": {Milk:59, Curd:48, Ghee:549, Butter:487, Paneer:285, Cheese:385, Lassi:27, Cream:124},
+"2025-11-08": {Milk:60, Curd:48, Ghee:550, Butter:489, Paneer:286, Cheese:386, Lassi:27, Cream:123},
+"2025-11-09": {Milk:61, Curd:49, Ghee:551, Butter:490, Paneer:287, Cheese:387, Lassi:28, Cream:124},
+"2025-11-10": {Milk:62, Curd:50, Ghee:552, Butter:491, Paneer:289, Cheese:388, Lassi:28, Cream:125},
+"2025-11-11": {Milk:61, Curd:49, Ghee:551, Butter:490, Paneer:288, Cheese:387, Lassi:27, Cream:124},
+"2025-11-12": {Milk:60, Curd:48, Ghee:549, Butter:489, Paneer:287, Cheese:386, Lassi:26, Cream:123},
+"2025-11-13": {Milk:59, Curd:48, Ghee:548, Butter:488, Paneer:286, Cheese:385, Lassi:26, Cream:122},
+"2025-11-14": {Milk:58, Curd:47, Ghee:547, Butter:487, Paneer:285, Cheese:384, Lassi:26, Cream:122},
+"2025-11-15": {Milk:59, Curd:48, Ghee:548, Butter:488, Paneer:286, Cheese:385, Lassi:27, Cream:123},
+"2025-11-16": {Milk:60, Curd:49, Ghee:550, Butter:489, Paneer:287, Cheese:386, Lassi:27, Cream:124},
+"2025-11-17": {Milk:61, Curd:50, Ghee:551, Butter:490, Paneer:288, Cheese:387, Lassi:27, Cream:124},
+"2025-11-18": {Milk:60, Curd:49, Ghee:550, Butter:489, Paneer:287, Cheese:386, Lassi:26, Cream:123},
+"2025-11-19": {Milk:59, Curd:48, Ghee:548, Butter:488, Paneer:286, Cheese:385, Lassi:26, Cream:122},
+"2025-11-20": {Milk:58, Curd:47, Ghee:547, Butter:487, Paneer:285, Cheese:384, Lassi:26, Cream:121},
+"2025-11-21": {Milk:59, Curd:48, Ghee:548, Butter:488, Paneer:286, Cheese:385, Lassi:27, Cream:122},
+"2025-11-22": {Milk:60, Curd:49, Ghee:549, Butter:489, Paneer:287, Cheese:386, Lassi:27, Cream:123},
+};
+
+// -------------------- DAIRY ICONS --------------------
+let DAIRY_ICONS = {
+  Milk: "🥛",
+  Curd: "🍶",
+  Ghee: "🧈",
+  Butter: "🧈",
+  Paneer: "🧀",
+  Cheese: "🧀",
+  Lassi: "🥤",
+  Cream: "🍨"
+};
+
+// -------------------- LOAD REAL DATE --------------------
+let selector = document.getElementById("dateSelector");
+let allDates = Object.keys(DAIRY_PRICE_HISTORY);
+
+// Fill dropdown
+allDates.forEach(d => selector.innerHTML += `<option value="${d}">${d}</option>`);
+
+// Detect today
+function getTodayDate() {
+  let d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+let today = getTodayDate();
+selector.value = DAIRY_PRICE_HISTORY[today] ? today : allDates[allDates.length - 1];
+
+// -------------------- LOAD PRICES --------------------
+function loadPrices() {
+  let date = selector.value;
+  let list = document.getElementById("dairyList");
+
+  let todayPrices = DAIRY_PRICE_HISTORY[date];
+
+  let index = allDates.indexOf(date);
+  let yesterday = index > 0 ? DAIRY_PRICE_HISTORY[allDates[index - 1]] : null;
+
+  list.innerHTML = "";
+
+  for (let item in todayPrices) {
+    let price = todayPrices[item];
+    let icon = DAIRY_ICONS[item] || "🛒";
+
+    let changeTag = "";
+    if (yesterday) {
+      let prev = yesterday[item];
+      if (price > prev) changeTag = `<span class="price-change inc">(+${price-prev}) ⬆</span>`;
+      else if (price < prev) changeTag = `<span class="price-change dec">(-${prev-price}) ⬇</span>`;
+      else changeTag = `<span class="price-change same">(0) •</span>`;
+    }
+
+    list.innerHTML += `
+      <li>
+        <span class="emoji">${icon}</span>
+        <strong>${item}</strong>
+        <span class="price-value">₹${price}</span>
+        ${changeTag}
+      </li>
+    `;
+  }
+}
+
+loadPrices();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login — Sundarwadi</title>
+  <link rel="stylesheet" href="admin-login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="login-wrapper">
+
+  <div class="login-card">
+    <h2>🔐 Admin Login</h2>
+    <p class="subtitle">Enter credentials to continue</p>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()" class="btn">Login</button>
+    <a href="index.html" class="back-btn">Back to Home</a>
+    <p id="msg" class="msg"></p>
+  </div>
+
+</div>
+
+<script>
+function login() {
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
+
+  if (user === "admin" && pass === "1234") {
+    localStorage.setItem("isLoggedIn", "true");
+    window.location.href = "admin.html";
+  } else {
+    document.getElementById("msg").innerText = "Invalid username or password!";
+  }
+}
+</script>
+
+</body>
+</html>

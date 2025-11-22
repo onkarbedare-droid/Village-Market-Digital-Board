@@ -1,0 +1,97 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f4f8ff;
+  margin: 0;
+  padding: 20px;
+  color: #222;
+}
+
+h1 {
+  text-align: center;
+  color: #0055ff;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+/* Dropdown */
+#dateSelector {
+  display: block;
+  margin: 0 auto 25px auto;
+  padding: 10px;
+  width: 220px;
+  border: 2px solid #0055ff;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #0055ff;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Grid layout */
+#vegList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  width: 95%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Cards */
+#vegList li {
+  background: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+  border-top: 5px solid #0055ff;
+  transition: 0.25s;
+}
+
+#vegList li:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+}
+
+.emoji {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.price-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.price-change {
+  display: block;
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.inc { color: #0daa2a; }
+.dec { color: #e63939; }
+.same { color: gray; }
+
+/* Responsive */
+@media(max-width:1024px){
+  #vegList {
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+@media(max-width:768px){
+  #vegList {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+@media(max-width:480px){
+  #vegList {
+    grid-template-columns: repeat(1,1fr);
+  }
+}

@@ -1,0 +1,120 @@
+/* -------------------- BASE PAGE -------------------- */
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f4f8ff;
+  margin: 0;
+  padding: 20px;
+  color: #222;
+}
+
+h1 {
+  text-align: center;
+  color: #0055ff;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+/* -------------------- DATE DROPDOWN -------------------- */
+#dateSelector {
+  display: block;
+  margin: 0 auto 25px auto;
+  padding: 10px 15px;
+  width: 220px;
+  background: #fff;
+  border: 2px solid #0055ff;
+  border-radius: 10px;
+  color: #0055ff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+#dateSelector:hover {
+  background: #e6efff;
+}
+
+/* -------------------- GRID LAYOUT -------------------- */
+#groceryList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  width: 95%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* -------------------- CARD STYLE -------------------- */
+#groceryList li {
+  background: #ffffff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+  border-top: 5px solid #0055ff;
+  transition: 0.25s ease;
+}
+
+#groceryList li:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+/* Grocery Icon */
+.emoji {
+  font-size: 36px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Item Name */
+#groceryList li strong {
+  display: block;
+  font-size: 20px;
+  color: #003bbb;
+  margin-bottom: 5px;
+}
+
+/* Price */
+.price-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Price change */
+.price-change {
+  display: block;
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Colors for price change */
+.inc { color: #0daa2a; }   /* Green ↑ */
+.dec { color: #e63939; }   /* Red ↓ */
+.same { color: gray; }     /* Gray 0 */
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 1024px) {
+  #groceryList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  #groceryList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  #groceryList {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

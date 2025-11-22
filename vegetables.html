@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vegetable Prices</title>
+    <link rel="stylesheet" href="vegetables.css">
+</head>
+
+<body>
+
+<h1>Vegetable Price History</h1>
+
+<select id="dateSelector" onchange="loadPrices()"></select>
+
+<ul id="vegList"></ul>
+
+<script>
+// -------------------- VEGETABLE PRICE HISTORY --------------------
+let VEG_PRICE_HISTORY = {
+"2025-11-01": {Tomato:22, Potato:24, Onion:18, Cabbage:20, Carrot:30, Brinjal:25, Cauliflower:22, Ladyfinger:28, Peas:40, Spinach:15},
+"2025-11-02": {Tomato:23, Potato:24, Onion:19, Cabbage:21, Carrot:32, Brinjal:26, Cauliflower:22, Ladyfinger:29, Peas:39, Spinach:16},
+"2025-11-03": {Tomato:24, Potato:25, Onion:20, Cabbage:21, Carrot:33, Brinjal:27, Cauliflower:23, Ladyfinger:30, Peas:42, Spinach:16},
+"2025-11-04": {Tomato:25, Potato:26, Onion:21, Cabbage:22, Carrot:35, Brinjal:26, Cauliflower:23, Ladyfinger:30, Peas:41, Spinach:15},
+"2025-11-05": {Tomato:27, Potato:25, Onion:22, Cabbage:23, Carrot:34, Brinjal:28, Cauliflower:24, Ladyfinger:31, Peas:43, Spinach:17},
+"2025-11-06": {Tomato:26, Potato:25, Onion:21, Cabbage:22, Carrot:33, Brinjal:27, Cauliflower:25, Ladyfinger:30, Peas:42, Spinach:16},
+"2025-11-07": {Tomato:28, Potato:26, Onion:23, Cabbage:23, Carrot:34, Brinjal:29, Cauliflower:26, Ladyfinger:31, Peas:44, Spinach:16},
+"2025-11-08": {Tomato:29, Potato:27, Onion:23, Cabbage:24, Carrot:36, Brinjal:28, Cauliflower:27, Ladyfinger:32, Peas:45, Spinach:17},
+"2025-11-09": {Tomato:30, Potato:27, Onion:24, Cabbage:25, Carrot:35, Brinjal:28, Cauliflower:28, Ladyfinger:32, Peas:44, Spinach:17},
+"2025-11-10": {Tomato:31, Potato:28, Onion:24, Cabbage:25, Carrot:37, Brinjal:29, Cauliflower:28, Ladyfinger:33, Peas:46, Spinach:18},
+"2025-11-11": {Tomato:32, Potato:29, Onion:25, Cabbage:26, Carrot:38, Brinjal:30, Cauliflower:29, Ladyfinger:33, Peas:47, Spinach:18},
+"2025-11-12": {Tomato:31, Potato:29, Onion:26, Cabbage:26, Carrot:38, Brinjal:29, Cauliflower:28, Ladyfinger:32, Peas:46, Spinach:17},
+"2025-11-13": {Tomato:33, Potato:28, Onion:25, Cabbage:27, Carrot:39, Brinjal:30, Cauliflower:30, Ladyfinger:34, Peas:47, Spinach:18},
+"2025-11-14": {Tomato:34, Potato:29, Onion:26, Cabbage:27, Carrot:40, Brinjal:31, Cauliflower:31, Ladyfinger:34, Peas:48, Spinach:18},
+"2025-11-15": {Tomato:35, Potato:30, Onion:27, Cabbage:28, Carrot:41, Brinjal:32, Cauliflower:32, Ladyfinger:35, Peas:49, Spinach:19},
+"2025-11-16": {Tomato:36, Potato:30, Onion:27, Cabbage:28, Carrot:40, Brinjal:31, Cauliflower:32, Ladyfinger:35, Peas:50, Spinach:19},
+"2025-11-17": {Tomato:35, Potato:29, Onion:26, Cabbage:27, Carrot:39, Brinjal:30, Cauliflower:31, Ladyfinger:34, Peas:49, Spinach:18},
+"2025-11-18": {Tomato:34, Potato:29, Onion:25, Cabbage:26, Carrot:38, Brinjal:29, Cauliflower:30, Ladyfinger:33, Peas:48, Spinach:17},
+"2025-11-19": {Tomato:33, Potato:28, Onion:25, Cabbage:25, Carrot:37, Brinjal:28, Cauliflower:30, Ladyfinger:32, Peas:47, Spinach:17},
+"2025-11-20": {Tomato:32, Potato:27, Onion:24, Cabbage:24, Carrot:36, Brinjal:27, Cauliflower:29, Ladyfinger:32, Peas:46, Spinach:16},
+"2025-11-21": {Tomato:33, Potato:27, Onion:25, Cabbage:25, Carrot:37, Brinjal:28, Cauliflower:29, Ladyfinger:33, Peas:47, Spinach:17},
+"2025-11-22": {Tomato:34, Potato:28, Onion:26, Cabbage:26, Carrot:38, Brinjal:29, Cauliflower:30, Ladyfinger:34, Peas:48, Spinach:17},
+};
+
+// -------------------- VEGETABLE ICONS --------------------
+let VEG_ICONS = {
+    Tomato: "🍅",
+    Potato: "🥔",
+    Onion: "🧅",
+    Cabbage: "🥬",
+    Carrot: "🥕",
+    Brinjal: "🍆",
+    Cauliflower: "🥦",
+    Ladyfinger: "🫛",
+    Peas: "🟢",
+    Spinach: "🌿"
+};
+
+
+// -------------------- LOAD REAL-TIME DATE DROPDOWN --------------------
+let selector = document.getElementById("dateSelector");
+let allDates = Object.keys(VEG_PRICE_HISTORY);
+
+// Fill dropdown
+allDates.forEach(d => {
+    selector.innerHTML += `<option value="${d}">${d}</option>`;
+});
+
+// Detect today
+function getTodayDate() {
+    let now = new Date();
+    let y = now.getFullYear();
+    let m = (now.getMonth() + 1).toString().padStart(2, "0");
+    let d = now.getDate().toString().padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+
+let today = getTodayDate();
+
+// If today's date exists → use it
+if (VEG_PRICE_HISTORY[today]) selector.value = today;
+// If not → use latest available date
+else selector.value = allDates[allDates.length - 1];
+
+
+// -------------------- LOAD PRICES WITH INCREASE/DECREASE --------------------
+function loadPrices() {
+    let date = selector.value;
+    let list = document.getElementById("vegList");
+
+    let todayPrices = VEG_PRICE_HISTORY[date];
+
+    let index = allDates.indexOf(date);
+    let yesterdayPrices = index > 0 ? VEG_PRICE_HISTORY[allDates[index - 1]] : null;
+
+    list.innerHTML = "";
+
+    for (let veg in todayPrices) {
+        let priceToday = todayPrices[veg];
+        let icon = VEG_ICONS[veg] || "🥗";
+
+        let changeTag = "";
+        if (yesterdayPrices) {
+            let prev = yesterdayPrices[veg];
+
+            if (priceToday > prev)
+                changeTag = `<span class="price-change inc">(+${priceToday - prev}) ⬆</span>`;
+            else if (priceToday < prev)
+                changeTag = `<span class="price-change dec">(-${prev - priceToday}) ⬇</span>`;
+            else
+                changeTag = `<span class="price-change same">(0) •</span>`;
+        }
+
+        list.innerHTML += `
+        <li>
+            <span class="emoji">${icon}</span>
+            <strong>${veg}</strong>
+            <span class="price-value">₹${priceToday}</span>
+            ${changeTag}
+        </li>
+        `;
+    }
+}
+
+loadPrices();
+
+</script>
+
+</body>
+</html>

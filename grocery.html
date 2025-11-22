@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery Prices</title>
+    <link rel="stylesheet" href="grocery.css">
+</head>
+
+<body>
+
+<h1>Grocery Price History</h1>
+
+<select id="dateSelector" onchange="loadPrices()"></select>
+
+<ul id="groceryList"></ul>
+
+<script>
+// -------------------- GROCERY PRICE HISTORY (25 days) --------------------
+let GROCERY_PRICE_HISTORY = {
+"2025-11-01": {Rice:55, Wheat:40, Sugar:45, Salt:20, Atta:38, Oil:130, Dal:95, Maida:32, Poha:30, Suji:28},
+"2025-11-02": {Rice:56, Wheat:41, Sugar:45, Salt:20, Atta:39, Oil:129, Dal:96, Maida:33, Poha:31, Suji:29},
+"2025-11-03": {Rice:57, Wheat:40, Sugar:46, Salt:19, Atta:40, Oil:131, Dal:97, Maida:32, Poha:31, Suji:28},
+"2025-11-04": {Rice:58, Wheat:41, Sugar:45, Salt:19, Atta:39, Oil:132, Dal:96, Maida:33, Poha:32, Suji:29},
+"2025-11-05": {Rice:57, Wheat:42, Sugar:46, Salt:20, Atta:40, Oil:131, Dal:98, Maida:34, Poha:32, Suji:30},
+"2025-11-06": {Rice:58, Wheat:42, Sugar:47, Salt:21, Atta:41, Oil:130, Dal:99, Maida:33, Poha:33, Suji:31},
+"2025-11-07": {Rice:59, Wheat:43, Sugar:47, Salt:21, Atta:41, Oil:131, Dal:100, Maida:34, Poha:33, Suji:31},
+"2025-11-08": {Rice:60, Wheat:43, Sugar:48, Salt:20, Atta:42, Oil:132, Dal:99, Maida:35, Poha:34, Suji:30},
+"2025-11-09": {Rice:61, Wheat:44, Sugar:48, Salt:20, Atta:43, Oil:133, Dal:98, Maida:34, Poha:35, Suji:31},
+"2025-11-10": {Rice:62, Wheat:44, Sugar:49, Salt:21, Atta:44, Oil:134, Dal:97, Maida:36, Poha:35, Suji:32},
+"2025-11-11": {Rice:61, Wheat:43, Sugar:48, Salt:20, Atta:44, Oil:133, Dal:98, Maida:35, Poha:34, Suji:31},
+"2025-11-12": {Rice:60, Wheat:42, Sugar:47, Salt:21, Atta:43, Oil:132, Dal:97, Maida:34, Poha:33, Suji:30},
+"2025-11-13": {Rice:59, Wheat:42, Sugar:46, Salt:20, Atta:44, Oil:131, Dal:96, Maida:35, Poha:32, Suji:29},
+"2025-11-14": {Rice:58, Wheat:41, Sugar:47, Salt:21, Atta:45, Oil:130, Dal:95, Maida:34, Poha:32, Suji:29},
+"2025-11-15": {Rice:59, Wheat:42, Sugar:48, Salt:21, Atta:45, Oil:129, Dal:94, Maida:35, Poha:33, Suji:30},
+"2025-11-16": {Rice:60, Wheat:43, Sugar:49, Salt:22, Atta:46, Oil:130, Dal:95, Maida:36, Poha:33, Suji:31},
+"2025-11-17": {Rice:59, Wheat:42, Sugar:49, Salt:21, Atta:45, Oil:129, Dal:96, Maida:35, Poha:34, Suji:30},
+"2025-11-18": {Rice:58, Wheat:41, Sugar:48, Salt:21, Atta:44, Oil:128, Dal:95, Maida:34, Poha:34, Suji:29},
+"2025-11-19": {Rice:57, Wheat:40, Sugar:47, Salt:20, Atta:43, Oil:127, Dal:94, Maida:33, Poha:33, Suji:28},
+"2025-11-20": {Rice:56, Wheat:39, Sugar:46, Salt:19, Atta:42, Oil:126, Dal:93, Maida:32, Poha:32, Suji:27},
+"2025-11-21": {Rice:57, Wheat:40, Sugar:47, Salt:20, Atta:42, Oil:127, Dal:94, Maida:33, Poha:33, Suji:28},
+"2025-11-22": {Rice:58, Wheat:41, Sugar:48, Salt:20, Atta:43, Oil:128, Dal:95, Maida:34, Poha:34, Suji:29},
+};
+
+// -------------------- GROCERY ICONS --------------------
+let GROCERY_ICONS = {
+  Rice: "🍚",
+  Wheat: "🌾",
+  Sugar: "🧂",
+  Salt: "🧂",
+  Atta: "🥣",
+  Oil: "🛢️",
+  Dal: "🥘",
+  Maida: "🌾",
+  Poha: "🍲",
+  Suji: "🥗"
+};
+
+// -------------------- LOAD REAL-TIME DATE --------------------
+let selector = document.getElementById("dateSelector");
+let allDates = Object.keys(GROCERY_PRICE_HISTORY);
+
+// Fill dropdown
+allDates.forEach(date => {
+  selector.innerHTML += `<option value="${date}">${date}</option>`;
+});
+
+// Detect today
+function getTodayDate() {
+  let d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+let today = getTodayDate();
+
+// If today's date exists → select it
+if (GROCERY_PRICE_HISTORY[today]) selector.value = today;
+else selector.value = allDates[allDates.length - 1];
+
+// -------------------- LOAD PRICES WITH COLOR INDICATORS --------------------
+function loadPrices() {
+  let date = selector.value;
+  let list = document.getElementById("groceryList");
+
+  let todayPrices = GROCERY_PRICE_HISTORY[date];
+
+  let index = allDates.indexOf(date);
+  let yesterdayPrices = index > 0 ? GROCERY_PRICE_HISTORY[allDates[index - 1]] : null;
+
+  list.innerHTML = "";
+
+  for (let item in todayPrices) {
+    let price = todayPrices[item];
+    let icon = GROCERY_ICONS[item] || "🛒";
+
+    let changeTag = "";
+    if (yesterdayPrices) {
+      let prev = yesterdayPrices[item];
+      if (price > prev) changeTag = `<span class="price-change inc">(+${price-prev}) ⬆</span>`;
+      else if (price < prev) changeTag = `<span class="price-change dec">(-${prev-price}) ⬇</span>`;
+      else changeTag = `<span class="price-change same">(0) •</span>`;
+    }
+
+    list.innerHTML += `
+      <li>
+        <span class="emoji">${icon}</span>
+        <strong>${item}</strong>
+        <span class="price-value">₹${price}</span>
+        ${changeTag}
+      </li>
+    `;
+  }
+}
+
+loadPrices();
+
+</script>
+
+</body>
+</html>

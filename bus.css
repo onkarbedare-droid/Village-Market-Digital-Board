@@ -1,0 +1,93 @@
+/* Page Background */
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  background: #f4f8ff;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #005bbb, #0074d9);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.9rem;
+}
+
+/* Main Bus Grid Layout – 3 Cards Per Row */
+.bus-section {
+  padding: 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* 3 columns */
+  gap: 20px;
+}
+
+/* Each Bus Route Card */
+.route-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  border-left: 6px solid #0074d9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: 0.3s ease;
+}
+
+.route-card:hover {
+  transform: scale(1.03);
+  background: #f0f8ff;
+}
+
+/* Card Heading */
+.route-card h2 {
+  margin-top: 0;
+  color: #005bbb;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.35rem;
+}
+
+.route-card p {
+  margin: 8px 0;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+strong {
+  color: #005bbb;
+}
+
+.back-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: grey;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #004ec2;
+  transform: translateY(-3px);
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 900px) {
+  .bus-section {
+    grid-template-columns: repeat(2, 1fr);  /* 2 columns */
+  }
+}
+
+@media (max-width: 600px) {
+  .bus-section {
+    grid-template-columns: repeat(1, 1fr);  /* 1 column */
+  }
+}

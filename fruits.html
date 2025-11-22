@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fruit Prices</title>
+    <link rel="stylesheet" href="fruits.css">
+</head>
+
+<body>
+
+<h1>Fruit Price History</h1>
+
+<select id="dateSelector" onchange="loadPrices()"></select>
+
+<ul id="fruitList"></ul>
+
+
+<script>
+// -------------------- FRUIT PRICE HISTORY --------------------
+let FRUIT_PRICE_HISTORY = {
+  "2025-11-01": {Apple: 140, Banana: 45, Mango: 120, Grapes: 90, Orange: 80, Papaya: 50, Pineapple: 60, Watermelon: 35, Pomegranate: 150, Guava: 55, Kiwi: 35, Chikoo: 45},
+  "2025-11-02": {Apple: 142, Banana: 44, Mango: 118, Grapes: 92, Orange: 82, Papaya: 50, Pineapple: 62, Watermelon: 36, Pomegranate: 152, Guava: 54, Kiwi: 36, Chikoo: 46},
+  "2025-11-03": {Apple: 145, Banana: 45, Mango: 119, Grapes: 91, Orange: 83, Papaya: 51, Pineapple: 63, Watermelon: 35, Pomegranate: 154, Guava: 55, Kiwi: 37, Chikoo: 47},
+  "2025-11-04": {Apple: 148, Banana: 46, Mango: 120, Grapes: 93, Orange: 84, Papaya: 52, Pineapple: 64, Watermelon: 36, Pomegranate: 155, Guava: 56, Kiwi: 36, Chikoo: 47},
+  "2025-11-05": {Apple: 150, Banana: 47, Mango: 118, Grapes: 92, Orange: 85, Papaya: 52, Pineapple: 65, Watermelon: 35, Pomegranate: 156, Guava: 57, Kiwi: 37, Chikoo: 48},
+  "2025-11-06": {Apple: 149, Banana: 46, Mango: 117, Grapes: 94, Orange: 85, Papaya: 51, Pineapple: 65, Watermelon: 36, Pomegranate: 158, Guava: 56, Kiwi: 38, Chikoo: 48},
+  "2025-11-07": {Apple: 151, Banana: 47, Mango: 118, Grapes: 95, Orange: 86, Papaya: 52, Pineapple: 66, Watermelon: 37, Pomegranate: 159, Guava: 57, Kiwi: 37, Chikoo: 49},
+  "2025-11-08": {Apple: 153, Banana: 48, Mango: 119, Grapes: 94, Orange: 87, Papaya: 52, Pineapple: 67, Watermelon: 36, Pomegranate: 160, Guava: 58, Kiwi: 38, Chikoo: 49},
+  "2025-11-09": {Apple: 154, Banana: 49, Mango: 118, Grapes: 96, Orange: 88, Papaya: 53, Pineapple: 68, Watermelon: 37, Pomegranate: 162, Guava: 59, Kiwi: 37, Chikoo: 50},
+  "2025-11-10": {Apple: 155, Banana: 48, Mango: 119, Grapes: 97, Orange: 89, Papaya: 53, Pineapple: 69, Watermelon: 37, Pomegranate: 163, Guava: 59, Kiwi: 38, Chikoo: 50},
+  "2025-11-11": {Apple: 154, Banana: 47, Mango: 118, Grapes: 98, Orange: 88, Papaya: 52, Pineapple: 70, Watermelon: 36, Pomegranate: 162, Guava: 58, Kiwi: 37, Chikoo: 49},
+  "2025-11-12": {Apple: 153, Banana: 46, Mango: 117, Grapes: 97, Orange: 87, Papaya: 51, Pineapple: 69, Watermelon: 35, Pomegranate: 161, Guava: 57, Kiwi: 36, Chikoo: 48},
+  "2025-11-13": {Apple: 152, Banana: 45, Mango: 118, Grapes: 96, Orange: 86, Papaya: 50, Pineapple: 68, Watermelon: 36, Pomegranate: 160, Guava: 56, Kiwi: 36, Chikoo: 48},
+  "2025-11-14": {Apple: 150, Banana: 46, Mango: 119, Grapes: 95, Orange: 85, Papaya: 50, Pineapple: 67, Watermelon: 35, Pomegranate: 158, Guava: 57, Kiwi: 37, Chikoo: 49},
+  "2025-11-15": {Apple: 149, Banana: 45, Mango: 120, Grapes: 94, Orange: 84, Papaya: 51, Pineapple: 66, Watermelon: 36, Pomegranate: 157, Guava: 58, Kiwi: 38, Chikoo: 50},
+  "2025-11-16": {Apple: 148, Banana: 44, Mango: 121, Grapes: 93, Orange: 83, Papaya: 51, Pineapple: 65, Watermelon: 37, Pomegranate: 156, Guava: 57, Kiwi: 37, Chikoo: 49},
+  "2025-11-17": {Apple: 147, Banana: 45, Mango: 120, Grapes: 94, Orange: 84, Papaya: 50, Pineapple: 66, Watermelon: 36, Pomegranate: 155, Guava: 56, Kiwi: 37, Chikoo: 48},
+  "2025-11-18": {Apple: 148, Banana: 46, Mango: 119, Grapes: 93, Orange: 85, Papaya: 50, Pineapple: 67, Watermelon: 37, Pomegranate: 154, Guava: 57, Kiwi: 38, Chikoo: 48},
+  "2025-11-19": {Apple: 149, Banana: 47, Mango: 118, Grapes: 92, Orange: 84, Papaya: 49, Pineapple: 66, Watermelon: 36, Pomegranate: 153, Guava: 56, Kiwi: 36, Chikoo: 47},
+  "2025-11-20": {Apple: 150, Banana: 46, Mango: 117, Grapes: 93, Orange: 83, Papaya: 48, Pineapple: 65, Watermelon: 35, Pomegranate: 152, Guava: 55, Kiwi: 37, Chikoo: 46},
+  "2025-11-21": {Apple: 151, Banana: 47, Mango: 118, Grapes: 94, Orange: 84, Papaya: 48, Pineapple: 66, Watermelon: 35, Pomegranate: 153, Guava: 56, Kiwi: 38, Chikoo: 46},
+  "2025-11-22": {Apple: 152, Banana: 48, Mango: 119, Grapes: 95, Orange: 85, Papaya: 49, Pineapple: 67, Watermelon: 36, Pomegranate: 154, Guava: 57, Kiwi: 37, Chikoo: 47},
+
+};
+
+
+// -------------------- FRUIT ICONS --------------------
+let FRUIT_ICONS = {
+  Apple: "🍎",
+  Banana: "🍌",
+  Mango: "🥭",
+  Grapes: "🍇",
+  Orange: "🍊",
+  Papaya: "🍈",
+  Pineapple: "🍍",
+  Watermelon: "🍉",
+  Pomegranate: "🍎",
+  Guava: "🥝",
+  Kiwi: "🥝",
+  Chikoo: "🍐"
+};
+
+// -------------------- LOAD SELECT OPTIONS --------------------
+let selector = document.getElementById("dateSelector");
+for (let date in FRUIT_PRICE_HISTORY) {
+  selector.innerHTML += `<option value="${date}">${date}</option>`;
+}
+
+
+// -------------------- LOAD PRICES & COMPARE --------------------
+function loadPrices() {
+  let date = selector.value;
+  let list = document.getElementById("fruitList");
+
+  let todayPrices = FRUIT_PRICE_HISTORY[date];
+
+  // PREVIOUS DATE
+  let dates = Object.keys(FRUIT_PRICE_HISTORY);
+  let index = dates.indexOf(date);
+
+  let yesterdayPrices = index > 0 ? FRUIT_PRICE_HISTORY[dates[index - 1]] : null;
+
+  list.innerHTML = "";
+
+  for (let fruit in todayPrices) {
+    let todayPrice = todayPrices[fruit];
+    let icon = FRUIT_ICONS[fruit] || "🍏";
+
+    let change = "";
+    let color = "black";
+
+    if (yesterdayPrices) {
+      let prevPrice = yesterdayPrices[fruit];
+
+      if (todayPrice > prevPrice) {
+        change = ` <span style="color:green;">(+${todayPrice - prevPrice}) ⬆</span>`;
+      } else if (todayPrice < prevPrice) {
+        change = ` <span style="color:red;">(-${prevPrice - todayPrice}) ⬇</span>`;
+      } else {
+        change = ` <span style="color:gray;">(0) •</span>`;
+      }
+    }
+
+    list.innerHTML += `
+    <li>
+        <span class="emoji">${icon}</span>
+        <strong>${fruit}</strong>
+        <span class="price-value">₹${todayPrice}</span>
+        <span class="price-change">${change}</span>
+    </li>
+`;
+  }
+}
+
+// Load default date
+loadPrices();
+
+</script>
+
+</body>
+</html>

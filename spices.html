@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spices & Masala Prices</title>
+    <link rel="stylesheet" href="spices.css">
+</head>
+
+<body>
+
+<h1>Spices & Masala Price History</h1>
+
+<select id="dateSelector" onchange="loadPrices()"></select>
+
+<ul id="spiceList"></ul>
+
+<script>
+// -------------------- SPICES PRICE HISTORY (25 DAYS) --------------------
+let SPICE_PRICE_HISTORY = {
+"2025-11-01": {Turmeric:120, Chili:160, Coriander:90, Cumin:220, GaramMasala:240, BlackPepper:450, Mustard:110, Fenugreek:80},
+"2025-11-02": {Turmeric:121, Chili:158, Coriander:91, Cumin:221, GaramMasala:242, BlackPepper:452, Mustard:111, Fenugreek:80},
+"2025-11-03": {Turmeric:122, Chili:159, Coriander:92, Cumin:223, GaramMasala:241, BlackPepper:453, Mustard:112, Fenugreek:81},
+"2025-11-04": {Turmeric:123, Chili:160, Coriander:93, Cumin:224, GaramMasala:243, BlackPepper:454, Mustard:113, Fenugreek:82},
+"2025-11-05": {Turmeric:124, Chili:161, Coriander:94, Cumin:225, GaramMasala:245, BlackPepper:455, Mustard:114, Fenugreek:83},
+"2025-11-06": {Turmeric:123, Chili:160, Coriander:94, Cumin:224, GaramMasala:244, BlackPepper:454, Mustard:113, Fenugreek:82},
+"2025-11-07": {Turmeric:124, Chili:162, Coriander:95, Cumin:226, GaramMasala:246, BlackPepper:456, Mustard:114, Fenugreek:83},
+"2025-11-08": {Turmeric:125, Chili:163, Coriander:96, Cumin:227, GaramMasala:247, BlackPepper:457, Mustard:115, Fenugreek:84},
+"2025-11-09": {Turmeric:126, Chili:162, Coriander:97, Cumin:228, GaramMasala:248, BlackPepper:458, Mustard:115, Fenugreek:85},
+"2025-11-10": {Turmeric:127, Chili:164, Coriander:98, Cumin:229, GaramMasala:249, BlackPepper:460, Mustard:116, Fenugreek:86},
+"2025-11-11": {Turmeric:126, Chili:163, Coriander:97, Cumin:228, GaramMasala:248, BlackPepper:459, Mustard:115, Fenugreek:85},
+"2025-11-12": {Turmeric:125, Chili:162, Coriander:96, Cumin:227, GaramMasala:247, BlackPepper:458, Mustard:114, Fenugreek:84},
+"2025-11-13": {Turmeric:124, Chili:161, Coriander:95, Cumin:226, GaramMasala:246, BlackPepper:457, Mustard:114, Fenugreek:84},
+"2025-11-14": {Turmeric:123, Chili:160, Coriander:94, Cumin:225, GaramMasala:245, BlackPepper:456, Mustard:113, Fenugreek:83},
+"2025-11-15": {Turmeric:124, Chili:161, Coriander:95, Cumin:226, GaramMasala:246, BlackPepper:457, Mustard:114, Fenugreek:84},
+"2025-11-16": {Turmeric:125, Chili:162, Coriander:96, Cumin:227, GaramMasala:247, BlackPepper:458, Mustard:115, Fenugreek:84},
+"2025-11-17": {Turmeric:126, Chili:163, Coriander:97, Cumin:228, GaramMasala:248, BlackPepper:459, Mustard:115, Fenugreek:85},
+"2025-11-18": {Turmeric:125, Chili:162, Coriander:96, Cumin:227, GaramMasala:247, BlackPepper:458, Mustard:114, Fenugreek:84},
+"2025-11-19": {Turmeric:124, Chili:161, Coriander:95, Cumin:226, GaramMasala:246, BlackPepper:457, Mustard:113, Fenugreek:83},
+"2025-11-20": {Turmeric:123, Chili:160, Coriander:94, Cumin:225, GaramMasala:245, BlackPepper:456, Mustard:112, Fenugreek:82},
+"2025-11-21": {Turmeric:124, Chili:161, Coriander:95, Cumin:226, GaramMasala:246, BlackPepper:457, Mustard:113, Fenugreek:83},
+"2025-11-22": {Turmeric:125, Chili:162, Coriander:96, Cumin:227, GaramMasala:247, BlackPepper:458, Mustard:114, Fenugreek:84},
+
+};
+
+// -------------------- SPICE ICONS --------------------
+let SPICE_ICONS = {
+  Turmeric: "🌾",
+  Chili: "🌶️",
+  Coriander: "🌿",
+  Cumin: "🫘",
+  GaramMasala: "🧂",
+  BlackPepper: "⚫",
+  Mustard: "🌾",
+  Fenugreek: "🟡"
+};
+
+// -------------------- REAL DATE DETECTION --------------------
+let selector = document.getElementById("dateSelector");
+let allDates = Object.keys(SPICE_PRICE_HISTORY);
+
+allDates.forEach(d => selector.innerHTML += `<option value="${d}">${d}</option>`);
+
+function getTodayDate() {
+  let d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+let today = getTodayDate();
+selector.value = SPICE_PRICE_HISTORY[today] ? today : allDates[allDates.length - 1];
+
+// -------------------- LOAD PRICES --------------------
+function loadPrices() {
+    let date = selector.value;
+    let list = document.getElementById("spiceList");
+
+    let todayPrices = SPICE_PRICE_HISTORY[date];
+    let index = allDates.indexOf(date);
+    let yesterday = index > 0 ? SPICE_PRICE_HISTORY[allDates[index - 1]] : null;
+
+    list.innerHTML = "";
+
+    for (let item in todayPrices) {
+        let price = todayPrices[item];
+        let icon = SPICE_ICONS[item] || "🧂";
+
+        let changeTag = "";
+        if (yesterday) {
+            let prev = yesterday[item];
+            if (price > prev) changeTag = `<span class="price-change inc">(+${price-prev}) ⬆</span>`;
+            else if (price < prev) changeTag = `<span class="price-change dec">(-${prev-price}) ⬇</span>`;
+            else changeTag = `<span class="price-change same">(0) •</span>`;
+        }
+
+        list.innerHTML += `
+        <li>
+            <span class="emoji">${icon}</span>
+            <strong>${item}</strong>
+            <span class="price-value">₹${price}</span>
+            ${changeTag}
+        </li>
+        `;
+    }
+}
+
+loadPrices();
+</script>
+
+</body>
+</html>
