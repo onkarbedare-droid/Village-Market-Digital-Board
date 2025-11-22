@@ -42,4 +42,3 @@ It modernizes traditional village communication and supports digital awareness i
 
 ---
 
-## ✅ Folder Structure (Suggested)
